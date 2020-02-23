@@ -45,6 +45,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             Container(
               height: 20,
               width: dimens.maxWidth,
+              margin: const EdgeInsets.only(bottom: 20),
               child: FlareActor(
                 'assets/animations/3-indicators.flr',
                 fit: BoxFit.contain,
@@ -208,7 +209,7 @@ class Screen3 extends StatelessWidget {
 
   Widget _buildButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: SizedBox(
         width: double.infinity,
         height: 60.0,
@@ -221,7 +222,7 @@ class Screen3 extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.black.withOpacity(0.6),
+              color: Colors.purple[900],
             ),
             child: Center(
               child: Text(

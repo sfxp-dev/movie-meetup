@@ -50,8 +50,9 @@ class __BodyState extends State<_Body> {
     double percentageY = (localY / 230) * 100;
     return Transform(
       transform: Matrix4.identity()
-        ..translate(defaultPosition ? 0.0 : (8 * (percentageX / 50) + -8),
-            defaultPosition ? 0.0 : (8 * (percentageY / 50) + -8), 0.0),
+        ..setEntry(3, 2, 0.001)
+        ..rotateX(defaultPosition ? 0 : (0.3 * (percentageY / 50) + -0.3))
+        ..rotateY(defaultPosition ? 0 : (-0.3 * (percentageX / 50) + 0.3)),
       alignment: FractionalOffset.center,
       child: Container(
         width: double.infinity,
