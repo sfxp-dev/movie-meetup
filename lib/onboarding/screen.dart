@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:sfxp_meetup/util/utils.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   @override
@@ -10,7 +11,6 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
-  int _currentIndex = 0;
   final _controller = PageControls();
 
   @override
@@ -22,7 +22,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     if (mounted)
       setState(() {
         _controller.changeTab(index);
-        _currentIndex = index;
       });
   }
 
@@ -30,28 +29,52 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: LayoutBuilder(
-        builder: (_, dimens) => Column(
+        builder: (_, dimens) => Stack(
+          fit: StackFit.expand,
           children: [
-            Expanded(
-              child: PageView(
-                onPageChanged: (val) => _changeTab(val),
-                children: <Widget>[
-                  Screen1(),
-                  Screen2(),
-                  Screen3(),
-                ],
-              ),
+            PageView(
+              onPageChanged: (val) => _changeTab(val),
+              children: <Widget>[
+                Screen1(),
+                Screen2(),
+                Screen3(),
+              ],
             ),
-            Container(
-              height: 20,
-              width: dimens.maxWidth,
-              margin: const EdgeInsets.only(bottom: 20),
-              child: FlareActor(
-                'assets/animations/3-indicators.flr',
-                fit: BoxFit.contain,
-                controller: _controller,
-              ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 20,
+                    width: dimens.maxWidth,
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: FlareActor(
+                      'assets/animations/3-indicators.flr',
+                      fit: BoxFit.contain,
+                      controller: _controller,
+                    ),
+                  ),
+                ),
+              ],
             ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'Cinema Plus',
+                    style: TextStyle(
+                      fontFamily: "Product",
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 40,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -72,8 +95,7 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animation = Tween<double>(end: 1, begin: 0).animate(_animationController)
       ..addListener(() {
         setState(() {});
@@ -99,10 +121,10 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
           _animationController.reverse();
         }
       },
-      child: Column(
-        children: <Widget>[
-          Expanded(
-              child: Center(
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Center(
             child: Transform(
               alignment: FractionalOffset.center,
               transform: Matrix4.identity()
@@ -118,24 +140,25 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
                 },
                 child: FlareActor(
                   'assets/animations/spaceman.flr',
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                   animation: 'Untitled',
                 ),
               ),
             ),
-          )),
+          ),
           Container(
-            margin: const EdgeInsets.only(bottom: 40.0),
+            margin: const EdgeInsets.only(bottom: 60.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
                   'The Perfect Angle',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Utils.titleStyle,
                 ),
                 const SizedBox(height: 10.0),
                 Text(
                   'Get access to the best seats in the house.',
-                  style: Theme.of(context).textTheme.caption,
+                  style: TextStyle(color: Colors.white, fontFamily: 'Product'),
                 ),
               ],
             ),
@@ -150,29 +173,30 @@ class Screen2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: <Widget>[
-          Expanded(
-            child: Center(
-              child: FlareActor(
-                'assets/animations/barcode.flr',
-                fit: BoxFit.contain,
-                animation: 'scan',
-              ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset('assets/images/theater.jpg', fit: BoxFit.cover),
+          Center(
+            child: FlareActor(
+              'assets/animations/barcode.flr',
+              fit: BoxFit.contain,
+              animation: 'scan',
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(bottom: 40.0),
+            margin: const EdgeInsets.only(bottom: 60.0),
             child: Column(
-              children: <Widget>[
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
                 Text(
                   'Skip the Line',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Utils.titleStyle,
                 ),
                 const SizedBox(height: 10.0),
                 Text(
                   'Quick access to all movie passes',
-                  style: Theme.of(context).textTheme.caption,
+                  style: TextStyle(color: Colors.white, fontFamily: 'Product'),
                 ),
               ],
             ),
@@ -191,45 +215,50 @@ class Screen3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(
-      children: [
-        Expanded(
-          child: Center(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset('assets/images/space.jpg', fit: BoxFit.cover),
+          Center(
             child: FlareActor(
               'assets/animations/Robot.flr',
               fit: BoxFit.contain,
               animation: 'buscando',
             ),
           ),
-        ),
-        _buildButton(context),
-      ],
-    ));
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildButton(context),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 60),
       child: SizedBox(
         width: double.infinity,
         height: 60.0,
         child: GestureDetector(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
-              color: Colors.purple[900],
+              color: Colors.white,
             ),
             child: Center(
               child: Text(
                 'Let\'s Go!',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 28,
+                  color: Colors.purple[900],
+                  fontFamily: 'Product',
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600
                 ),
               ),
             ),
@@ -245,6 +274,7 @@ class Screen3 extends StatelessWidget {
 
 class PageControls extends FlareControls {
   int _lastIndex = 0;
+
   void changeTab(int index) {
     if (index != _lastIndex) {
       play('${_lastIndex + 1}-${index + 1}');

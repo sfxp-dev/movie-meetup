@@ -43,6 +43,7 @@ class __BodyState extends State<_Body> {
   double localX = 0;
   double localY = 0;
   bool defaultPosition = true;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -61,11 +62,7 @@ class __BodyState extends State<_Body> {
           color: Color(0xFFCCCCCC),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
-            BoxShadow(
-                offset: Offset(0, 60),
-                color: Color.fromARGB(120, 0, 0, 0),
-                blurRadius: 22,
-                spreadRadius: -20),
+            BoxShadow(offset: Offset(0, 60), color: Color.fromARGB(120, 0, 0, 0), blurRadius: 22, spreadRadius: -20),
           ],
         ),
         child: GestureDetector(
@@ -79,10 +76,8 @@ class __BodyState extends State<_Body> {
           onPanUpdate: (details) {
             setState(() {
               setState(() => defaultPosition = false);
-              if (details.localPosition.dx > 0 &&
-                  details.localPosition.dy < 230) {
-                if (details.localPosition.dx < size.width - 40 &&
-                    details.localPosition.dy > 0) {
+              if (details.localPosition.dx > 0 && details.localPosition.dy < 230) {
+                if (details.localPosition.dx < size.width - 40 && details.localPosition.dy > 0) {
                   localX = details.localPosition.dx;
                   localY = details.localPosition.dy;
                 }
@@ -98,10 +93,8 @@ class __BodyState extends State<_Body> {
                 children: [
                   Transform(
                     transform: Matrix4.identity()
-                      ..translate(
-                          defaultPosition ? 0.0 : (8 * (percentageX / 50) + -8),
-                          defaultPosition ? 0.0 : (8 * (percentageY / 50) + -8),
-                          0.0),
+                      ..translate(defaultPosition ? 0.0 : (8 * (percentageX / 50) + -8),
+                          defaultPosition ? 0.0 : (8 * (percentageY / 50) + -8), 0.0),
                     alignment: FractionalOffset.center,
                     child: Opacity(
                       opacity: 0.4,
@@ -140,14 +133,8 @@ class __BodyState extends State<_Body> {
                   ),
                   Transform(
                     transform: Matrix4.identity()
-                      ..translate(
-                          defaultPosition
-                              ? 0.0
-                              : (15 * (percentageX / 50) + -15),
-                          defaultPosition
-                              ? 0.0
-                              : (15 * (percentageY / 50) + -15),
-                          0.0),
+                      ..translate(defaultPosition ? 0.0 : (15 * (percentageX / 50) + -15),
+                          defaultPosition ? 0.0 : (15 * (percentageY / 50) + -15), 0.0),
                     alignment: FractionalOffset.center,
                     child: Padding(
                       padding: const EdgeInsets.only(right: 22),
@@ -160,8 +147,7 @@ class __BodyState extends State<_Body> {
                               padding: const EdgeInsets.only(left: 22, top: 15),
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5),
-                                child: Image.asset("assets/images/sfxp.png",
-                                    width: 90, color: Colors.white),
+                                child: Image.asset("assets/images/sfxp.png", width: 90, color: Colors.white),
                               ),
                             ),
                           ),
@@ -189,9 +175,7 @@ class __BodyState extends State<_Body> {
                               Text(
                                 'THRU 09/22',
                                 style: TextStyle(
-                                    fontFamily: "CreditCard",
-                                    color: Colors.white.withOpacity(0.8),
-                                    fontSize: 12),
+                                    fontFamily: "CreditCard", color: Colors.white.withOpacity(0.8), fontSize: 12),
                               ),
                             ],
                           ),
@@ -227,29 +211,24 @@ class _Header extends StatelessWidget {
             color: Color(0xFFDDDDDD),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
-              BoxShadow(
-                  offset: Offset(5, 5),
-                  color: Color.fromARGB(40, 0, 0, 0),
-                  blurRadius: 8),
-              BoxShadow(
-                  offset: Offset(-5, -5),
-                  color: Color.fromARGB(150, 255, 255, 255),
-                  blurRadius: 8)
+              BoxShadow(offset: Offset(5, 5), color: Color.fromARGB(40, 0, 0, 0), blurRadius: 8),
+              BoxShadow(offset: Offset(-5, -5), color: Color.fromARGB(150, 255, 255, 255), blurRadius: 8)
             ],
           ),
         ),
         Expanded(
-            child: Center(
-          child: Text(
-            'Cinema Plus',
-            style: TextStyle(
-              fontFamily: "Product",
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 30,
+          child: Center(
+            child: Text(
+              'Cinema Plus',
+              style: TextStyle(
+                fontFamily: "Product",
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                fontSize: 30,
+              ),
             ),
           ),
-        )),
+        ),
         SizedBox(width: 50)
       ],
     );

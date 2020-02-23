@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+class Utils {
+  static TextStyle titleStyle = TextStyle(color: Colors.white, fontFamily: 'Product', fontSize: 32);
+}
+
 class HorizontalClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
