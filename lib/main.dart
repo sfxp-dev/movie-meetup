@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sfxp_meetup/onboarding/onboarding.dart';
-import 'package:sfxp_meetup/ui/home.dart';
 
+import 'onboarding/screen.dart';
 import 'ui/home.dart';
 
 void main() => runApp(MyApp());
@@ -14,14 +13,12 @@ class MyApp extends StatelessWidget {
       title: 'SFXP Meetup',
       routes: {
         '/': (BuildContext context) {
-          return OnboardingFlow();
+          return OnBoardingScreen();
         },
-        'home': (BuildContext context) {
+        '/home': (BuildContext context) {
           return HomeScreen();
         }
       },
-//      home: OnboardingFlow(),
-//      home: HomeScreen(),
     );
   }
 }

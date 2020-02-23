@@ -1,21 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sfxp_meetup/widget/fold_listview.dart';
-import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  double localX = 0;
-  double localY = 0;
-  bool defaultPosition = true;
-
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color(0xFFDDDDDD),
+      color: const Color(0xFFDDDDDD),
       child: SafeArea(
         child: Stack(
           children: [
@@ -26,7 +16,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Column(
-                children: [header(), SizedBox(height: 25), card()],
+                children: [
+                  _Header(),
+                  const SizedBox(height: 25),
+                  _Body(),
+                ],
               ),
             ),
             Padding(
@@ -38,58 +32,26 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
 
-  @widget
-  Widget header() {
-    return Row(
-      children: [
-        Container(
-          height: 50,
-          width: 50,
-          child: Icon(Icons.menu, color: Colors.black),
-          decoration: BoxDecoration(
-            color: Color(0xFFDDDDDD),
-            borderRadius: BorderRadius.circular(25),
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(5, 5),
-                  color: Color.fromARGB(40, 0, 0, 0),
-                  blurRadius: 8),
-              BoxShadow(
-                  offset: Offset(-5, -5),
-                  color: Color.fromARGB(150, 255, 255, 255),
-                  blurRadius: 8)
-            ],
-          ),
-        ),
-        Expanded(
-            child: Center(
-          child: Text(
-            'Cinema Plus',
-            style: TextStyle(
-              fontFamily: "Product",
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 30,
-            ),
-          ),
-        )),
-        SizedBox(width: 50)
-      ],
-    );
-  }
+class _Body extends StatefulWidget {
+  @override
+  __BodyState createState() => __BodyState();
+}
 
-  @widget
-  Widget card() {
+class __BodyState extends State<_Body> {
+  double localX = 0;
+  double localY = 0;
+  bool defaultPosition = true;
+  @override
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     double percentageX = (localX / (size.width - 40)) * 100;
     double percentageY = (localY / 230) * 100;
-
     return Transform(
       transform: Matrix4.identity()
-        ..setEntry(3, 2, 0.001)
-        ..rotateX(defaultPosition ? 0 : (0.3 * (percentageY / 50) + -0.3))
-        ..rotateY(defaultPosition ? 0 : (-0.3 * (percentageX / 50) + 0.3)),
+        ..translate(defaultPosition ? 0.0 : (8 * (percentageX / 50) + -8),
+            defaultPosition ? 0.0 : (8 * (percentageY / 50) + -8), 0.0),
       alignment: FractionalOffset.center,
       child: Container(
         width: double.infinity,
@@ -243,6 +205,52 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Header extends StatelessWidget {
+  const _Header({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          height: 50,
+          width: 50,
+          child: Icon(Icons.menu, color: Colors.black),
+          decoration: BoxDecoration(
+            color: Color(0xFFDDDDDD),
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(5, 5),
+                  color: Color.fromARGB(40, 0, 0, 0),
+                  blurRadius: 8),
+              BoxShadow(
+                  offset: Offset(-5, -5),
+                  color: Color.fromARGB(150, 255, 255, 255),
+                  blurRadius: 8)
+            ],
+          ),
+        ),
+        Expanded(
+            child: Center(
+          child: Text(
+            'Cinema Plus',
+            style: TextStyle(
+              fontFamily: "Product",
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 30,
+            ),
+          ),
+        )),
+        SizedBox(width: 50)
+      ],
     );
   }
 }
