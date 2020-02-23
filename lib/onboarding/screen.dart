@@ -124,25 +124,23 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Center(
-            child: Transform(
-              alignment: FractionalOffset.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.002)
-                ..rotateY(pi * _animation.value),
-              child: GestureDetector(
-                onTap: () {
-                  if (_animationStatus == AnimationStatus.dismissed) {
-                    _animationController.forward();
-                  } else {
-                    _animationController.reverse();
-                  }
-                },
-                child: FlareActor(
-                  'assets/animations/spaceman.flr',
-                  fit: BoxFit.cover,
-                  animation: 'Untitled',
-                ),
+          Transform(
+            alignment: FractionalOffset.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.002)
+              ..rotateY(pi * _animation.value),
+            child: GestureDetector(
+              onTap: () {
+                if (_animationStatus == AnimationStatus.dismissed) {
+                  _animationController.forward();
+                } else {
+                  _animationController.reverse();
+                }
+              },
+              child: FlareActor(
+                'assets/animations/spaceman.flr',
+                fit: BoxFit.cover,
+                animation: 'Untitled',
               ),
             ),
           ),
