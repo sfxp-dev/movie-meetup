@@ -195,6 +195,7 @@ class Screen2 extends StatefulWidget {
 
 class _Screen2State extends State<Screen2> {
   final _flareController = FlareControls();
+  var _ignorePoints = false;
 
   @override
   Widget build(BuildContext context) {
@@ -202,15 +203,19 @@ class _Screen2State extends State<Screen2> {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          GestureDetector(
-            onTap: () {
-              _flareController.play('success');
-            },
-            child: FlareActor(
-              'assets/animations/ticket.flr',
-              fit: BoxFit.contain,
-              animation: 'play',
-              controller: _flareController,
+          IgnorePointer(
+            ignoring: _ignorePoints,
+            child: GestureDetector(
+              onTap: () {
+                _flareController.play('success');
+                setState(() => _ignorePoints = true);
+              },
+              child: FlareActor(
+                'assets/animations/ticket.flr',
+                fit: BoxFit.contain,
+                animation: 'play',
+                controller: _flareController,
+              ),
             ),
           ),
           Container(
