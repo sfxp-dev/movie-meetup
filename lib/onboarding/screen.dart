@@ -4,6 +4,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:sfxp_meetup/util/utils.dart';
+import 'package:shake/shake.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   @override
@@ -11,16 +12,26 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final FULL_SCALE = 0.2;
+  final SCALE_FRACTION = 0.8;
+
   final _controller = PageControls();
+  PageController _pageController;
+  final _slides = [Screen1(), Screen2(), Screen3()];
+  var _page = 0.0;
+  var _currentPage = 0;
+  var _viewPortFraction = 0.9;
 
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: _currentPage, viewportFraction: _viewPortFraction);
   }
 
   void _changeTab(int index) {
     if (mounted)
       setState(() {
+        _currentPage = index;
         _controller.changeTab(index);
       });
   }
@@ -32,13 +43,31 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         builder: (_, dimens) => Stack(
           fit: StackFit.expand,
           children: [
-            PageView(
-              onPageChanged: (val) => _changeTab(val),
-              children: <Widget>[
-                Screen1(),
-                Screen2(),
-                Screen3(),
-              ],
+            Image.asset('assets/images/theater.jpg', fit: BoxFit.cover),
+            NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                if (notification is ScrollUpdateNotification) {
+                  setState(() {
+                    _page = _pageController.page;
+                  });
+                }
+                return true;
+              },
+              child: ScrollConfiguration(
+                behavior: NoScrollBehavior(),
+                child: PageView.builder(
+                  onPageChanged: (val) => _changeTab(val),
+                  controller: _pageController,
+                  itemBuilder: (context, index) {
+                    final scale = max(SCALE_FRACTION, (FULL_SCALE - (index - _page).abs()) + _viewPortFraction);
+                    return Transform.scale(
+                      scale: scale,
+                      child: _slides[index],
+                    );
+                  },
+                  itemCount: _slides.length,
+                ),
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -87,65 +116,45 @@ class Screen1 extends StatefulWidget {
   _Screen1State createState() => _Screen1State();
 }
 
-class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation<double> _animation;
-  AnimationStatus _animationStatus = AnimationStatus.dismissed;
+class _Screen1State extends State<Screen1> {
+  final _flareController = FlareControls();
+  ShakeDetector detector;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
-    _animation = Tween<double>(end: 1, begin: 0).animate(_animationController)
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        _animationStatus = status;
-      });
+    detector = ShakeDetector.autoStart(
+        onPhoneShake: () {
+          _flareController.play('stop');
+          _flareController.play('shake');
+          Future.delayed(Duration(milliseconds: 2300), () {
+            _flareController.play('stop');
+            _flareController.play('play');
+          });
+        }
+    );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
     super.dispose();
+    detector.stopListening();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        if (_animationStatus == AnimationStatus.dismissed) {
-          _animationController.forward();
-        } else {
-          _animationController.reverse();
-        }
-      },
+    return Container(
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Transform(
-            alignment: FractionalOffset.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.002)
-              ..rotateY(pi * _animation.value),
-            child: GestureDetector(
-              onTap: () {
-                if (_animationStatus == AnimationStatus.dismissed) {
-                  _animationController.forward();
-                } else {
-                  _animationController.reverse();
-                }
-              },
-              child: FlareActor(
-                'assets/animations/spaceman.flr',
-                fit: BoxFit.cover,
-                animation: 'Untitled',
-              ),
-            ),
+          FlareActor(
+            'assets/animations/popcorn.flr',
+            fit: BoxFit.fitWidth,
+            animation: 'play',
+            controller: _flareController,
           ),
           Container(
-            margin: const EdgeInsets.only(bottom: 60.0),
+            margin: const EdgeInsets.only(bottom: 100.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -167,23 +176,33 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
   }
 }
 
-class Screen2 extends StatelessWidget {
+class Screen2 extends StatefulWidget {
+  @override
+  _Screen2State createState() => _Screen2State();
+}
+
+class _Screen2State extends State<Screen2> {
+  final _flareController = FlareControls();
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/theater.jpg', fit: BoxFit.cover),
-          Center(
+          GestureDetector(
+            onTap: () {
+              _flareController.play('success');
+            },
             child: FlareActor(
-              'assets/animations/barcode.flr',
+              'assets/animations/ticket.flr',
               fit: BoxFit.contain,
-              animation: 'scan',
+              animation: 'play',
+              controller: _flareController,
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(bottom: 60.0),
+            margin: const EdgeInsets.only(bottom: 100.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -216,12 +235,11 @@ class Screen3 extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset('assets/images/space.jpg', fit: BoxFit.cover),
           Center(
             child: FlareActor(
-              'assets/animations/Robot.flr',
+              'assets/animations/faces.flr',
               fit: BoxFit.contain,
-              animation: 'buscando',
+              animation: 'play',
             ),
           ),
           Column(
@@ -237,7 +255,7 @@ class Screen3 extends StatelessWidget {
 
   Widget _buildButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 60),
+      padding: const EdgeInsets.only(left: 15, right: 15, bottom: 100),
       child: SizedBox(
         width: double.infinity,
         height: 60.0,
@@ -253,11 +271,7 @@ class Screen3 extends StatelessWidget {
               child: Text(
                 'Let\'s Go!',
                 style: TextStyle(
-                  color: Colors.purple[900],
-                  fontFamily: 'Product',
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600
-                ),
+                    color: Colors.purple[900], fontFamily: 'Product', fontSize: 25, fontWeight: FontWeight.w600),
               ),
             ),
           ),
