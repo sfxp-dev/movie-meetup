@@ -145,7 +145,10 @@ class _Screen1State extends State<Screen1> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        _flareController.play('shake');
+      },
       child: Column(
         children: [
           Expanded(
