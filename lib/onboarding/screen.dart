@@ -128,12 +128,7 @@ class _Screen1State extends State<Screen1> {
   void initState() {
     super.initState();
     detector = ShakeDetector.autoStart(onPhoneShake: () {
-      _flareController.play('stop');
-      _flareController.play('shake');
-      Future.delayed(Duration(milliseconds: 2300), () {
-        _flareController.play('stop');
-        _flareController.play('play');
-      });
+      _shakeAndPlay();
     });
   }
 
@@ -143,11 +138,20 @@ class _Screen1State extends State<Screen1> {
     detector.stopListening();
   }
 
+  void _shakeAndPlay() {
+    _flareController.play('stop');
+    _flareController.play('shake');
+    Future.delayed(Duration(milliseconds: 2300), () {
+      _flareController.play('stop');
+      _flareController.play('play');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _flareController.play('shake');
+        _shakeAndPlay();
       },
       child: Column(
         children: [
