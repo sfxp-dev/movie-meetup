@@ -159,7 +159,7 @@ class __BodyState extends State<_Body> {
                               padding: const EdgeInsets.only(left: 22, top: 15),
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5),
-                                child: Image.asset("assets/images/sfxp.png",
+                                child: Image.asset("assets/images/sfxp_white.png",
                                     width: 90, color: Colors.white),
                               ),
                             ),
