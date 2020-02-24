@@ -95,7 +95,8 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animation = Tween<double>(end: 1, begin: 0).animate(_animationController)
       ..addListener(() {
         setState(() {});
@@ -121,47 +122,90 @@ class _Screen1State extends State<Screen1> with SingleTickerProviderStateMixin {
           _animationController.reverse();
         }
       },
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Transform(
-            alignment: FractionalOffset.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.002)
-              ..rotateY(pi * _animation.value),
-            child: GestureDetector(
-              onTap: () {
-                if (_animationStatus == AnimationStatus.dismissed) {
-                  _animationController.forward();
-                } else {
-                  _animationController.reverse();
-                }
-              },
-              child: FlareActor(
-                'assets/animations/spaceman.flr',
-                fit: BoxFit.cover,
-                animation: 'Untitled',
+      child: Container(
+        color: Colors.black,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            // Transform(
+            //   alignment: Alignment.topCenter,
+            //   transform: Matrix4.identity()
+            //     ..setEntry(3, 2, 0.002)
+            //     ..rotateY(pi * _animation.value),
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       if (_animationStatus == AnimationStatus.dismissed) {
+            //         _animationController.forward();
+            //       } else {
+            //         _animationController.reverse();
+            //       }
+            //     },
+            //     // child: FlareActor(
+            //     //   'assets/animations/spaceman.flr',
+            //     //   fit: BoxFit.cover,
+            //     //   animation: 'Untitled',
+            //     // ),
+            //     child: Image.asset(
+            //       'assets/images/movie-theater.jpeg',
+            //       fit: BoxFit.contain,
+            //     ),
+            //   ),
+            // ),
+            Positioned.fill(
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: Image.asset(
+                      'assets/images/theater.jpg',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Image.asset(
+                      'assets/images/movie-theater.jpeg',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Positioned(
+                    top: 245,
+                    right: 90,
+                    left: 90,
+                    height: 113,
+                    child: Container(
+                      alignment: Alignment.topCenter,
+                      transform: Matrix4.identity()
+                        ..setEntry(3, 2, 0.002)
+                        ..rotateX(pi * 0.032),
+                      child: FlareActor(
+                        'assets/animations/spaceman.flr',
+                        fit: BoxFit.cover,
+                        animation: 'Untitled',
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(bottom: 60.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  'The Perfect Angle',
-                  style: Utils.titleStyle,
-                ),
-                const SizedBox(height: 10.0),
-                Text(
-                  'Get access to the best seats in the house.',
-                  style: TextStyle(color: Colors.white, fontFamily: 'Product'),
-                ),
-              ],
+            Container(
+              margin: const EdgeInsets.only(bottom: 60.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    'The Perfect Angle',
+                    style: Utils.titleStyle,
+                  ),
+                  const SizedBox(height: 10.0),
+                  Text(
+                    'Get access to the best seats in the house.',
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: 'Product'),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -253,11 +297,10 @@ class Screen3 extends StatelessWidget {
               child: Text(
                 'Let\'s Go!',
                 style: TextStyle(
-                  color: Colors.purple[900],
-                  fontFamily: 'Product',
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600
-                ),
+                    color: Colors.purple[900],
+                    fontFamily: 'Product',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
