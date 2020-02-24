@@ -25,7 +25,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _currentPage, viewportFraction: _viewPortFraction);
+    _pageController = PageController(
+        initialPage: _currentPage, viewportFraction: _viewPortFraction);
   }
 
   void _changeTab(int index) {
@@ -59,7 +60,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   onPageChanged: (val) => _changeTab(val),
                   controller: _pageController,
                   itemBuilder: (context, index) {
-                    final scale = max(SCALE_FRACTION, (FULL_SCALE - (index - _page).abs()) + _viewPortFraction);
+                    final scale = max(
+                        SCALE_FRACTION,
+                        (FULL_SCALE - (index - _page).abs()) +
+                            _viewPortFraction);
                     return Transform.scale(
                       scale: scale,
                       child: _slides[index],
@@ -123,16 +127,14 @@ class _Screen1State extends State<Screen1> {
   @override
   void initState() {
     super.initState();
-    detector = ShakeDetector.autoStart(
-        onPhoneShake: () {
-          _flareController.play('stop');
-          _flareController.play('shake');
-          Future.delayed(Duration(milliseconds: 2300), () {
-            _flareController.play('stop');
-            _flareController.play('play');
-          });
-        }
-    );
+    detector = ShakeDetector.autoStart(onPhoneShake: () {
+      _flareController.play('stop');
+      _flareController.play('shake');
+      Future.delayed(Duration(milliseconds: 2300), () {
+        _flareController.play('stop');
+        _flareController.play('play');
+      });
+    });
   }
 
   @override
@@ -144,28 +146,38 @@ class _Screen1State extends State<Screen1> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Stack(
-        alignment: Alignment.bottomCenter,
+      child: Column(
         children: [
-          FlareActor(
-            'assets/animations/popcorn.flr',
-            fit: BoxFit.fitWidth,
-            animation: 'play',
-            controller: _flareController,
+          Expanded(
+            child: FlareActor(
+              'assets/animations/popcorn.flr',
+              fit: BoxFit.fitWidth,
+              animation: 'play',
+              controller: _flareController,
+            ),
           ),
           Container(
-            margin: const EdgeInsets.only(bottom: 100.0),
+            margin: const EdgeInsets.only(
+              bottom: 100,
+              left: 20,
+              right: 20,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Text(
-                  'The Perfect Angle',
+                  'The Perfect Snack',
                   style: Utils.titleStyle,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10.0),
                 Text(
-                  'Get access to the best seats in the house.',
-                  style: TextStyle(color: Colors.white, fontFamily: 'Product'),
+                  'Enjoy a endless supply of your favorite food and drinks.',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Product',
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -271,7 +283,10 @@ class Screen3 extends StatelessWidget {
               child: Text(
                 'Let\'s Go!',
                 style: TextStyle(
-                    color: Colors.purple[900], fontFamily: 'Product', fontSize: 25, fontWeight: FontWeight.w600),
+                    color: Colors.purple[900],
+                    fontFamily: 'Product',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
