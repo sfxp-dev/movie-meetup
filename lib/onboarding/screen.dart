@@ -148,6 +148,7 @@ class _Screen1State extends State<Screen1> {
     return Container(
       child: Column(
         children: [
+          SizedBox(height: 100),
           Expanded(
             child: FlareActor(
               'assets/animations/popcorn.flr',
